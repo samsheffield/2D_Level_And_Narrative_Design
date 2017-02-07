@@ -33,7 +33,7 @@ public class MoveToClick : MonoBehaviour
 
         if (currentInteractable != null)
         {
-            if (Mathf.Abs(Vector3.Distance(transform.position, target)) < .1f)
+            if (Mathf.Abs(Vector3.Distance(transform.position, target)) < Mathf.Epsilon)
             {
                 if (!arrived)
                 {
@@ -47,25 +47,27 @@ public class MoveToClick : MonoBehaviour
             }
         }
 
-        if (!arrived)
-        {
-            if (currentInteractable != null)
-            {
-                if (currentInteractable.disableOnExit)
-                    currentInteractable.DisableEvent();
-
-            }
-        }
         // Check if correct input is given based on whether the continuous variable is set true or false.
         // Set the target position to the converted mouse position
         if (Input.GetMouseButtonDown(0) || (Input.GetMouseButton(0) && continuous))
         {
+            // NEW
+            if (currentInteractable != null)
+            {
+                if (currentInteractable.disableOnExit)
+                {
+                    currentInteractable.DisableEvent();
+                }
+                
+                // Problematic?
+                currentInteractable = null;
+            }
 
-            //currentInteractable = null;
-
+            // NEW Test for mouse over using a raycast
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-            if (hit.collider != null)
+            // If something was hit by the ray
+            if (hit.collider)
             {
                 if (hit.collider.gameObject.CompareTag("Interactable"))
                 {
@@ -74,14 +76,12 @@ public class MoveToClick : MonoBehaviour
             }
 
             // Set target for movement
-
             if (currentInteractable != null)
             {
                 target = currentInteractable.stopLocation.position;
             }
             else
             {
-                currentInteractable = null;
                 Vector3 newMousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z);
                 target = Camera.main.ScreenToWorldPoint(newMousePosition);
             }
@@ -89,10 +89,10 @@ public class MoveToClick : MonoBehaviour
         }
 
         // Move towards target based on whether NavMesh2D is being used or not
+        // Set the navmesh agent's target position using .destination
         if (usingNavMesh2D)
-        {
-            // Set the navmesh agent's target position using .destination
-            navMesh2D.destination = target;
+        {  
+            navMesh2D.destination = target; 
         }
         else
         {
