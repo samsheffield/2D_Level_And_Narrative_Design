@@ -16,7 +16,7 @@ public class MoveToClick : MonoBehaviour
     private void Start()
     {
         target = transform.position;
-
+  
         // If you want to use Navigation2D, you'll need to set this to true in the inspector
         if (usingNavMesh2D)
         {

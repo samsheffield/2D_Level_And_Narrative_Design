@@ -5,9 +5,13 @@ using cakeslice;
 
 public class Interactable : MonoBehaviour
 {
+    // Setting a stop location
     public Transform stopLocation;
     public InteractEvent interactEvent;
     public bool disableOnExit;
+
+    // Always keep outline on?
+    public bool keepOutlineOn;
     private Outline outline;
     private bool outlineSet;
 
@@ -16,6 +20,8 @@ public class Interactable : MonoBehaviour
         outline = GetComponent<Outline>();
     }
 
+    // These 2 methods are used when MoveToClick arrives at or leaves the target
+    // Child components of the InteractEvent class are enabled or disbabled
     public void EnableEvent()
     {
         outline.enabled = true;
@@ -26,9 +32,10 @@ public class Interactable : MonoBehaviour
     {
         interactEvent.enabled = false;
         outline.enabled = false;
-        outlineSet = false;
+        outlineSet = false;  
     }
 
+    // Set outlines
     private void OnMouseDown()
     {
         outline.color = 1;
@@ -36,7 +43,7 @@ public class Interactable : MonoBehaviour
     }
     private void OnMouseEnter()
     {
-        if(!outlineSet)
+        if (!outlineSet)
             outline.color = 0;
 
         outline.enabled = true;
@@ -44,7 +51,7 @@ public class Interactable : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!outlineSet)
+        if (!outlineSet && !keepOutlineOn)
         {
             outline.enabled = false;
         }

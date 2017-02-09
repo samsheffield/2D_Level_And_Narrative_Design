@@ -2,25 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TVEvent : InteractEvent {
+// Inherit from the InteractEvent class
+public class TVEvent : InteractEvent
+{
+
     private AudioSource audioSource;
     public AudioClip tvAudio;
 
+    // Modify the parent's virtual methods with override + base.
     protected override void Awake()
     {
+        // Extend base class
         base.Awake();
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = tvAudio;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        // Play audio and animation
+        base.OnEnable();
         audioSource.Play();
-        anim.SetBool("tvFlicker", true);
     }
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        // Stop audio and animation
+        base.OnDisable();
         audioSource.Stop();
-        anim.SetBool("tvFlicker", false);
     }
 }

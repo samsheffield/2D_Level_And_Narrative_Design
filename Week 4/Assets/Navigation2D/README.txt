@@ -1,0 +1,1 @@
+Requires Navigation2D from the Unity Asset store.

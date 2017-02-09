@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrashCan : Item {
+// Default parent class is MonoBehaviour
+public class TrashCan : Item
+{
+    
+    // No Awake? If you don't need to make any changes to a parent's method, you don't need to call it in the child
 
-    protected override void Start()
+    // A parent's private method can be replaced by creating a new private method with the same name in a child
+    private void OnMouseDown()
     {
-        base.Start();
-    }
-
-    protected new void Update()
-    {
-        Debug.Log("Points " + points);
+        Debug.Log(gameObject.name + " is not currently for sale");
     }
 }

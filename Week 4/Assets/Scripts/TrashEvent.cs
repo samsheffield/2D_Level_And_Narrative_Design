@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Inherit from the InteractEvent class
 public class TrashEvent : InteractEvent
 {
-
-    private void OnEnable()
+    private void Start()
     {
-        anim.SetBool("onFire", true);
+        //Currently nothing!
     }
-    private void OnDisable()
-    {
-        anim.SetBool("onFire", false);
 
-    }
 }

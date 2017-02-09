@@ -13,9 +13,9 @@ public class MoveToClick : MonoBehaviour
     private NavMeshAgent2D navMesh2D;
     public bool usingNavMesh2D;
 
+    // Interactable location
     public Interactable currentInteractable;
     private bool arrived;
-
 
     private void Start()
     {
@@ -31,6 +31,7 @@ public class MoveToClick : MonoBehaviour
     void Update()
     {
 
+        // Check if we've arrived at the interactable
         if (currentInteractable != null)
         {
             if (Mathf.Abs(Vector3.Distance(transform.position, target)) < Mathf.Epsilon)
@@ -43,30 +44,32 @@ public class MoveToClick : MonoBehaviour
             }
             else
             {
+                //HERE!!!!!
                 arrived = false;
             }
         }
+
+
 
         // Check if correct input is given based on whether the continuous variable is set true or false.
         // Set the target position to the converted mouse position
         if (Input.GetMouseButtonDown(0) || (Input.GetMouseButton(0) && continuous))
         {
-            // NEW
+            // Disable interactable when leaving
             if (currentInteractable != null)
             {
                 if (currentInteractable.disableOnExit)
                 {
                     currentInteractable.DisableEvent();
                 }
-                
-                // Problematic?
+
                 currentInteractable = null;
             }
 
-            // NEW Test for mouse over using a raycast
+            // Test for mouse over using a raycast
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-            // If something was hit by the ray
+            // Set target for movement
             if (hit.collider)
             {
                 if (hit.collider.gameObject.CompareTag("Interactable"))
@@ -75,7 +78,7 @@ public class MoveToClick : MonoBehaviour
                 }
             }
 
-            // Set target for movement
+
             if (currentInteractable != null)
             {
                 target = currentInteractable.stopLocation.position;
@@ -91,8 +94,8 @@ public class MoveToClick : MonoBehaviour
         // Move towards target based on whether NavMesh2D is being used or not
         // Set the navmesh agent's target position using .destination
         if (usingNavMesh2D)
-        {  
-            navMesh2D.destination = target; 
+        {
+            navMesh2D.destination = target;
         }
         else
         {
